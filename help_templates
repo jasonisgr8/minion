@@ -5,9 +5,13 @@ Send an email with "minion" in the subject line (it ignores emails with subject 
 
 For a list of email templates, send the following in the body of the email:
 
-Task type: help templates
+Task type: help
 Recipient: your.email@address.com
 
+To update minion to the latest revision:
+
+Task type: minionupdate
+Recipient: your.email@address.com
 _________________________________________________________________
 
 The options available for the nmap task are:
@@ -28,11 +32,17 @@ _________________________________________________________________
 
 The options available for the System Stats task are:
 
-Task Type: system stats
+Task Type: stats
 
 Recipient: <your.email@email-address.com>
 
 
 The info in <> is sample data.  Do NOT include the < or > when sending your request.  
 __________________________________________________________________
+
+To update the host (debian based) to the latest revision:
+
+Task type: debianupdate
+Recipient: your.email@address.com
+_________________________________________________________________
 
