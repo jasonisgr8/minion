@@ -163,32 +163,6 @@ fi
 
 # ~~~~~~~~~~~~~~~~~~~~ Task subroutines ~~~~~~~~~~~~~~~~~~~
 
-#TARGET_URL="`grep -i "Target\ URL" .request_processing.$MINION_TASK | awk -F: '{ print $2 }' | sed 's/^\ //g' | awk -F\< '{ print $1 }' | sed -e 's/.$//g' | sed 's/\=20//g' | sed 's/\=//g' | grep -v ^$ | sed s'/[\`\;\:]//g' | sed 's/\ //g'`"
-
-
-FUNCTION_TEMPLATE ()
-{
-AUTHORIZATION_CHECK
-if [ "$AUTHORIZED" = "good" ]; then
-echo "Initiating $TASK_TYPE..." >> "$MINION_TASK.log"
-echo "Your request has been approved and is queued for execution.  Once completed, you will recieve your data." | sendEmail -o tls=yes -f "$USERNAME" -t "$RECIPIENT" -s $SMTP_SERVER:$SMTP_PORT -xu "$USERNAME" -xp "$PASSWORD" -u "re: $MINION_TASK $TASK_TYPE (`date +%m-%d-%y`)"
-
-#~~~~~DO STUFF HERE~~~~~
-
-#source EXTERNAL_SCRIPT.sh >> "$MINION_TASK.log"
-
-#~~~~~~~~~~~~~~~~~~~~~~~
-
-cat "$MINION_TASK.log" >> "$SYSTEM_LOG"
-rm -f "$MINION_TASK.log"; rm .request_processing.$MINION_TASK; rm $AUTH_MAIL
-exit 0
-
-else
-echo "Your request has been submitted for approval.  Once approved, your request will be queued for delivery." | sendEmail -o tls=yes -f "$USERNAME" -t "$RECIPIENT" -s $SMTP_SERVER:$SMTP_PORT -xu "$USERNAME" -xp "$PASSWORD" -u "re: $MINION_TASK $TASK_TYPE (`date +%m-%d-%y`)"
-AUTHORIZATION_REQUEST
-fi
-}
-
 MODULE_BUILDER ()
 {
 AUTHORIZATION_CHECK
@@ -196,7 +170,7 @@ if [ "$AUTHORIZED" = "good" ]; then
 echo "Initiating $TASK_TYPE..." >> "$MINION_TASK.log"
 echo "Your request has been approved and is queued for execution.  Once completed, you will recieve your data." | sendEmail -o tls=yes -f "$USERNAME" -t "$RECIPIENT" -s $SMTP_SERVER:$SMTP_PORT -xu "$USERNAME" -xp "$PASSWORD" -u "re: $MINION_TASK $TASK_TYPE (`date +%m-%d-%y`)"
 
-echo $MODGUTS >> $MODFOLDER/$NEWMOD.sh
+echo $MODGUTS >> $MODFOLDER/$NEWMOD.mod
 echo $MODHELP >> help_templates
 
 cat "$MINION_TASK.log" >> "$SYSTEM_LOG"
@@ -211,16 +185,9 @@ fi
 
 # ~~~~~~~~~~~~~~~~~~~~ Identify and delegate tasks ~~~~~~~~~~~~~~~~~~~
 echo "Delegating Task..." >> "$SYSTEM_LOG"
-
-# clean up html stuffs before processing
-# Play: sed 's/\`//g' | sed 's/\"//g' | sed 's/\;//g' | sed 's/\=//g'
-# | sed 's/[^a-zA-Z0-9\s\.,\:-]]//g' 
-# [^a-zA-Z0-9\s\.,\:-]
-
 sed 's/<[^>]*>//g' .first_request_processing.$MINION_TASK | tr [:upper:] [:lower:] > .clean_request.$MINION_TASK
 rm .first_request_processing.$MINION_TASK
 mv .clean_request.$MINION_TASK .request_processing.$MINION_TASK
-
 fromdos .request_processing.$MINION_TASK
 
 # Set global options
@@ -242,7 +209,6 @@ touch .globalvariables.$MINION_TASK
 echo "TARGET_IP=\"$TARGET_IP\"" >> .globalvariables.$MINION_TASK
 echo "TARGET_PORT=\"$TARGET_PORT\"" >> .globalvariables.$MINION_TASK
 echo "SEARCH=\"$SEARCH\"" >> .globalvariables.$MINION_TASK
-
 
 # Special handling for email Recipients
 for ADDY in `echo $EMAIL_RECIPIENTS | tr [:upper:] [:lower:]`; do
@@ -282,6 +248,7 @@ echo "Your request has been approved and is queued for execution.  Once complete
 FILES="$TASK_TYPE_$AUTHORIZATION_CODE.$MINION_TASK"
 echo "FILES=\"$FILES\"" >> .globalvariables.$MINION_TASK
 
+chmod +x $MODFOLDER/*.mod
 $MODFOLDER/$TASK_TYPE.mod >> "$MINION_TASK.log"
 
 #if files, then tar and ship
