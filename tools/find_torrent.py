@@ -15,7 +15,7 @@ if len(sys.argv) > 1:
 
 from BeautifulSoup import BeautifulSoup
 ## torrentz = "https://monova.org/search?term=" + findme
-torrentz = "https://torrentz.eu/search?f=" + findme
+torrentz = "https://torrentz2.eu/search?f=" + findme
 print torrentz
 hdr = {'User-Agent': 'Mozilla/5.0'}
 req = urllib2.Request(torrentz,headers=hdr)
