@@ -4,8 +4,9 @@
 # Package requirements: ssh, heirloom-mailx, nmap, expect, fromdos (tofrodos)
 #Exit if the program is already running
 # 
-VERSION="3.1"
+VERSION="3.2"
 # Version History
+# 3.2 - Starting cleanup
 # 3.1 - Initial Git release
 source ./settings.cfg
 MODULES="`ls -1 $MODULEFOLDER`"
@@ -229,11 +230,19 @@ TARGET_IP="`grep -i "Target\ IP" .request_processing.$MINION_TASK | awk -F: '{ p
 TARGET_PORT="`grep -i "Target\ Port" .request_processing.$MINION_TASK | awk -F: '{ print $2 }' | sed 's/^\ //g' | sed 's/[\`\;\:]//g'`"
 AUTHORIZATION_CODE="`grep -i "AUTHORIZATION\ CODE" .request_processing.$MINION_TASK | awk -F: '{ print $2 }' | sed 's/^\ //g' | sed 's/[\`\;\:]//g'`"
 RECIPIENT="`grep -i "Recipient" .request_processing.$MINION_TASK | awk -F: '{ print $2 }' | sed 's/^\ //g' | sed 's/[\`\;\:]//g'`"
+SEARCH="`grep -i "Search" .request_processing.$MINION_TASK | awk -F: '{ print $2 }' | sed 's/^\ //g' | sed 's/[\`\;\:]//g'`"
 
 echo "Processing Options..." >> "$SYSTEM_LOG"
 echo Target IP\: $TARGET_IP >> "$SYSTEM_LOG"
 echo Target Ports\: $TARGET_PORT >> "$SYSTEM_LOG"
 echo Recipient\: $RECIPIENT >> "$SYSTEM_LOG"
+echo Search\: $SEARCH >> "$SYSTEM_LOG"
+
+touch .globalvariables.$MINION_TASK
+echo "TARGET_IP=\"$TARGET_IP\"" >> .globalvariables.$MINION_TASK
+echo "TARGET_PORT=\"$TARGET_PORT\"" >> .globalvariables.$MINION_TASK
+echo "SEARCH=\"$SEARCH\"" >> .globalvariables.$MINION_TASK
+
 
 # Special handling for email Recipients
 for ADDY in `echo $EMAIL_RECIPIENTS | tr [:upper:] [:lower:]`; do
@@ -247,9 +256,9 @@ echo "Attempting to use $RECIPIENT Failed because it is not recognized." >> "$MI
 #RECIPIENT=$DEFAULT_RECIPIENT
 echo "This email address is not allowed to tell me what to do, access denied." >> "$MINION_TASK.log"
 echo "Emailing alert..." >> "$MINION_TASK.log"
-cat "$MINION_TASK.log" | s-nail -r "$DEFAULT_RECIPIENT" -s "re: $MINION_TASK $TASK_TYPE (`date +%m-%d-%y`)" -S smtp-use-starttls -S ssl-verify=ignore -S smtp-auth=login -S smtp-auth-user=$USERNAME -S smtp-auth-password=$PASSWORD -S smtp=$SMTP_SERVER $DEFAULT_RECIPIENT
+cat "$MINION_TASK.log" | sendEmail -o tls=yes -f "$USERNAME" -t "$RECIPIENT" -s $SMTP_SERVER:$SMTP_PORT -xu "$USERNAME" -xp "$PASSWORD" -u "re: $MINION_TASK $TASK_TYPE (`date +%m-%d-%y`)"
 cat "$MINION_TASK.log" >> "$SYSTEM_LOG"
-rm -f "$MINION_TASK.log"; rm .request_processing.$MINION_TASK; rm $AUTH_MAIL
+rm -f "$MINION_TASK.log"; rm .request_processing.$MINION_TASK; rm $AUTH_MAIL; .globalvariables.$MINION_TASK
 exit 0
 fi
 
@@ -271,9 +280,7 @@ echo "Initiating $TASK_TYPE" >> "$SYSTEM_LOG"
 echo "Your request has been approved and is queued for execution.  Once completed, you will recieve your data." | sendEmail -o tls=yes -f "$USERNAME" -t "$RECIPIENT" -s $SMTP_SERVER:$SMTP_PORT -xu "$USERNAME" -xp "$PASSWORD" -u "re: $MINION_TASK $TASK_TYPE (`date +%m-%d-%y`)"
 
 FILES="$TASK_TYPE_$AUTHORIZATION_CODE.$MINION_TASK"
-echo "FILES=\"$FILES\"" > .modvariables
-echo "TARGET_IP=\"$TARGET_IP\"" >> .modvariables
-echo "TARGET_PORT=\"$TARGET_PORT\"" >> .modvariables
+echo "FILES=\"$FILES\"" >> .globalvariables.$MINION_TASK
 
 $MODFOLDER/$TASK_TYPE.mod >> "$MINION_TASK.log"
 
@@ -288,12 +295,12 @@ echo "$TASK_TYPE task completed." >> "$MINION_TASK.log"
 cat "$MINION_TASK.log" | sendEmail -o tls=yes -f "$USERNAME" -t "$RECIPIENT" -s $SMTP_SERVER:$SMTP_PORT -xu "$USERNAME" -xp "$PASSWORD" -u "re: $MINION_TASK $TASK_TYPE (`date +%m-%d-%y`)" -a $FILES.tgz
 fi
 
-rm -f $TASK_TYPE_*_$MINION_TASK
+rm -fr $FILES*
 
 ###
 
 cat "$MINION_TASK.log" >> "$SYSTEM_LOG"
-rm -f "$MINION_TASK.log"; rm .request_processing.$MINION_TASK; rm $AUTH_MAIL
+rm -f "$MINION_TASK.log"; rm .request_processing.$MINION_TASK; rm $AUTH_MAIL; rm .globalvariables.$MINION_TASK
 exit 0
 
 else
@@ -308,5 +315,5 @@ fi
 done
 
 cat "$MINION_TASK.log" >> "$SYSTEM_LOG"
-rm -f "$MINION_TASK.log"; rm .request_processing.$MINION_TASK; rm $AUTH_MAIL
+rm -f "$MINION_TASK.log"; rm .request_processing.$MINION_TASK; rm $AUTH_MAIL; rm .globalvariables.$MINION_TASK
 exit 0
