@@ -9,7 +9,7 @@ done
 
 echo "Connecting Tunnel..."
 /usr/bin/expect -c "
-spawn /usr/bin/ssh -Nf -t jason@67.141.232.26 -R 2222:localhost:22
+spawn /usr/bin/ssh -Nf -t jason@22.141.23.26 -R 2222:localhost:22
 expect \"assword\"
 send \"th1s1smyp4ssw0rd\n\"
 expect \"\\#\"
@@ -17,9 +17,3 @@ send \"top\n\"
 "
 
 echo "Connection Completed Successfully. :-) "
-
-echo "Emailing Jasons Door task results..." >> "$SYSTEM_LOG"
-cat "$MINION_TASK.log" | $SENDEMAIL
-
-cat "$MINION_TASK.log" >> "$SYSTEM_LOG"
-rm -f "$MINION_TASK.log"
