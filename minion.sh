@@ -1,5 +1,5 @@
 #!/bin/bash
-# By Jason Wylie
+# By Jason
 
 # Package requirements: ssh, heirloom-mailx, nmap, expect, fromdos (tofrodos)
 #Exit if the program is already running
