@@ -18,7 +18,7 @@ echo -e "+++++++++++++++++: System Data :+++++++++++++++++++
 `ifconfig | grep -v 127.0.0 | grep -i "inet\ "`
 + Memory (MB): `echo "" && free -m | grep -v +`
 + Disk Space:
-`/bin/df -h ./`
+`/bin/df -h`
 ++++++++++++++++++: User Data :++++++++++++++++++++
 + Username = `whoami`
 + Privlages = $PRIVLAGED
