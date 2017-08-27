@@ -210,6 +210,7 @@ touch .globalvariables.$MINION_TASK
 echo "TARGET_IP=\"$TARGET_IP\"" >> .globalvariables.$MINION_TASK
 echo "TARGET_PORT=\"$TARGET_PORT\"" >> .globalvariables.$MINION_TASK
 echo "SEARCH=\"$SEARCH\"" >> .globalvariables.$MINION_TASK
+echo "VERSION=\"$VERSION\"" >> .globalvariables.$MINION_TASK
 
 # Special handling for email Recipients
 for ADDY in `echo $EMAIL_RECIPIENTS | tr [:upper:] [:lower:]`; do
@@ -254,7 +255,7 @@ $MODFOLDER/$TASK_TYPE.mod >> "$MINION_TASK.log" 2>&1
 
 #if files, then tar and ship
 if [ ! "`ls -1 $FILES*`" ]; then
-echo "$TASK_TYPE task completed." >> "$MINION_TASK.log"
+echo "$TASK_TYPE task completed. [Minion V$VERSION]" >> "$MINION_TASK.log"
 cat "$MINION_TASK.log" | sendEmail -o tls=yes -f "$USERNAME" -t "$RECIPIENT" -s $SMTP_SERVER:$SMTP_PORT -xu "$USERNAME" -xp "$PASSWORD" -u "re: $MINION_TASK $TASK_TYPE (`date +%m-%d-%y`)"
 else
 
