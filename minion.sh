@@ -4,8 +4,9 @@
 # Package requirements: ssh, heirloom-mailx, nmap, expect, fromdos (tofrodos)
 #Exit if the program is already running
 # 
-VERSION="3.2"
+VERSION="3.3"
 # Version History
+# 3.3 - More cleanup
 # 3.2 - Starting cleanup
 # 3.1 - Initial Git release
 source ./settings.cfg
@@ -57,7 +58,7 @@ sleep ${SLEEP_TIME}; echo "";
 ) 
 )
 
-echo "$GETREQUESTMAIL"
+echo "$GETREQUESTMAIL" 
 }
 
 AUTH_FILE=".authorization_pending"
@@ -249,7 +250,7 @@ FILES="$TASK_TYPE_$AUTHORIZATION_CODE.$MINION_TASK"
 echo "FILES=\"$FILES\"" >> .globalvariables.$MINION_TASK
 
 chmod +x $MODFOLDER/*.mod
-$MODFOLDER/$TASK_TYPE.mod >> "$MINION_TASK.log"
+$MODFOLDER/$TASK_TYPE.mod >> "$MINION_TASK.log" 2>&1
 
 #if files, then tar and ship
 if [ ! "`ls -1 $FILES*`" ]; then
