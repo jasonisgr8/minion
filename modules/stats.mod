@@ -24,11 +24,14 @@ echo -e "+++++++++++++++++: System Data :+++++++++++++++++++
 + Privlages = $PRIVLAGED
 + Sessions = `who | grep $USER | wc -l` of $ENDSESSION MAX
 + Processes = $PROCCOUNT of $ENDPROC MAX"
-if [ ! "`which VBoxManage`" ]; then
-echo "+++++++++++++++++++++++++++++++++++++++++++++++++++"
-else echo -e "
+++++++++++++++++++: Netstat Info :++++++++++++++++++++
+/bin/netstat -tapn
+
+if [ "`which VBoxManage`" ]; then
+echo -e "
 +++++++++: Running VirtualBox Machines :+++++++++++
 `VBoxManage list runningvms`
-+++++++++++++++++++++++++++++++++++++++++++++++++++
 "
 fi
+echo "+++++++++++++++++++++++++++++++++++++++++++++++++++"
+
