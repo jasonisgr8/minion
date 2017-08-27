@@ -25,7 +25,7 @@ echo -e "+++++++++++++++++: System Data :+++++++++++++++++++
 + Sessions = `who | grep $USER | wc -l` of $ENDSESSION MAX
 + Processes = $PROCCOUNT of $ENDPROC MAX"
 ++++++++++++++++++: Netstat Info :++++++++++++++++++++
-/bin/netstat -tapn
+`/bin/netstat -tapn`
 
 if [ "`which VBoxManage`" ]; then
 echo -e "
