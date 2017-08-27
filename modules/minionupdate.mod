@@ -9,7 +9,7 @@ echo "Updating files to version $NEWVERSION from Github..."
 cp -ar tools/* ../../tools/
 chmod +x ../../tools/*
 cp -ar modules/* ../../modules/
-chmod +x ../../modules/"*
+chmod +x ../../modules/*
 cp minion.sh ../../
 chmod +x ../../minion.sh
 cp help_templates ../../
