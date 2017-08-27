@@ -3,8 +3,8 @@ mkdir .tmp_update
 cd .tmp_update
 git clone "https://github.com/jasonisgr8/minion"
 cd minion
-VERSION="`grep -i version minion.sh | awk -F\\" '{print $2}'`"
-echo "Updating files to version $VERSION from Github..."
+NEWVERSION="`grep -i version minion.sh | awk -F\\" '{print $2}'`"
+echo "Updating files to version $NEWVERSION from Github..."
 cp -ar tools/* ../../tools/
 chmod +x ../../tools/*
 cp -ar modules/* ../../modules/
