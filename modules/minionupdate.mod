@@ -1,7 +1,5 @@
 echo "Creating tmp dir..."
-if [ -d .tmp_update ]; then
 rm -fr .tmp_update
-fi
 mkdir .tmp_update
 cd .tmp_update
 git clone "https://github.com/jasonisgr8/minion"
