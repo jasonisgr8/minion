@@ -23,10 +23,10 @@ echo -e "+++++++++++++++++: System Data :+++++++++++++++++++
 + Username = `whoami`
 + Privlages = $PRIVLAGED
 + Sessions = `who | grep $USER | wc -l` of $ENDSESSION MAX
-+ Processes = $PROCCOUNT of $ENDPROC MAX"
++ Processes = $PROCCOUNT of $ENDPROC MAX
 ++++++++++++++++++: Netstat Info :++++++++++++++++++++
 `/bin/netstat -tapn`
-
+"
 if [ "`which VBoxManage`" ]; then
 echo -e "
 +++++++++: Running VirtualBox Machines :+++++++++++
