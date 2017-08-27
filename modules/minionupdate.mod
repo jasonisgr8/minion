@@ -6,8 +6,11 @@ cd minion
 VERSION="`grep -i version minion.sh | awk -F\\" '{print $2}'`"
 echo "Updating files to version $VERSION from Github..."
 cp -ar tools/* ../../tools/
+chmod +x ../../tools/*
 cp -ar modules/* ../../modules/
+chmod +x ../../modules/"*
 cp minion.sh ../../
+chmod +x ../../minion.sh
 cp help_templates ../../
 echo "Done."
 echo "Cleaning up..."
