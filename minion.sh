@@ -148,7 +148,7 @@ fi
 
 if [ ! "$REPORT_REQUESTS" ]; then
 echo "Nothing for me to do. :(" >> "$SYSTEM_LOG"
-rm .request_processing.$MINION_TASK
+rm .request_processing.$MINION_TASK $MINION_TASK.log
 exit 0
 fi
 #echo $REPORT_REQUESTS
