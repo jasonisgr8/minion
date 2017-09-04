@@ -56,11 +56,11 @@ echo ""
 ##echo "set SOURCE $domain" >> $domain$stamp.resource
 ##echo "run" >> $domain$stamp.resource
 ##echo ""
-echo "keys add shodan_api vUHySMO6Pm4AR0YoIk7usqi8gHkldcxq" >> $domain$stamp.resource
-echo "use recon/domains-hosts/shodan_hostname" >> $domain$stamp.resource
-echo "set SOURCE $domain" >> $domain$stamp.resource
-echo "run" >> $domain$stamp.resource
-echo ""
+#echo "keys add shodan_api Wemdicnr843sdfdsvcrtbrthgrfhd" >> $domain$stamp.resource
+#echo "use recon/domains-hosts/shodan_hostname" >> $domain$stamp.resource
+#echo "set SOURCE $domain" >> $domain$stamp.resource
+#echo "run" >> $domain$stamp.resource
+#echo ""
 echo "use recon/domains-hosts/brute_hosts" >> $domain$stamp.resource
 echo "set WORDLIST /usr/share/recon-ng/data/sorted_knock_dnsrecon_fierce_recon-ng.txt" >> $domain$stamp.resource
 echo "set SOURCE $domain" >> $domain$stamp.resource
