@@ -4,8 +4,9 @@
 # Package requirements: ssh, heirloom-mailx, nmap, expect, fromdos (tofrodos)
 #Exit if the program is already running
 # 
-VERSION="3.3"
+VERSION="3.4"
 # Version History
+# 3.4 - Misc updates
 # 3.3 - More cleanup
 # 3.2 - Starting cleanup
 # 3.1 - Initial Git release
@@ -17,7 +18,7 @@ MODULES="`ls -1 $MODULEFOLDER`"
 if [ "$UID" = "0" ]; then
 echo "I have adequate permissions, continuing on..."
 else echo "I am not root, lets try one more time with sudo..."
-sudo $0
+sudo $0 $1
 exit 0
 fi
 
