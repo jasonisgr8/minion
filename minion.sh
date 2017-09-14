@@ -6,7 +6,7 @@
 # 
 VERSION="3.4"
 # Version History
-# 3.4 - Misc updates
+# 3.4 - fixed bug in authorization email process and removed DEFAULT_RECIPIENT
 # 3.3 - More cleanup
 # 3.2 - Starting cleanup
 # 3.1 - Initial Git release
@@ -103,7 +103,7 @@ echo "END REQUEST" >> $AUTH_MAIL
 cat "$AUTH_MAIL" >> "$SYSTEM_LOG"
 echo "Sending approval request to $APPROVAL_RECIPIENT..." >> "$SYSTEM_LOG"
 echo "$AUTH_MAIL"
-cat "$AUTH_MAIL" | sendEmail -o tls=yes -f "$USERNAME" -t "$RECIPIENT" -s $SMTP_SERVER:$SMTP_PORT -xu "$USERNAME" -xp "$PASSWORD" -u "re: $MINION_TASK $TASK_TYPE (`date +%m-%d-%y`)"
+cat "$AUTH_MAIL" | sendEmail -o tls=yes -f "$USERNAME" -t "$APPROVAL_RECIPIENT" -s $SMTP_SERVER:$SMTP_PORT -xu "$USERNAME" -xp "$PASSWORD" -u "re: $MINION_TASK $TASK_TYPE (`date +%m-%d-%y`)"
 
 cat "$MINION_TASK.log" >> "$SYSTEM_LOG"
 rm -f "$MINION_TASK.log"; rm .request_processing.$MINION_TASK; rm $AUTH_MAIL
@@ -222,10 +222,9 @@ if [ "$ADDY" = "$RECIPIENT" ]; then
 
 if [ "$CHECK_EMAILER" != "good" ]; then
 echo "Attempting to use $RECIPIENT Failed because it is not recognized." >> "$MINION_TASK.log"
-#RECIPIENT=$DEFAULT_RECIPIENT
 echo "This email address is not allowed to tell me what to do, access denied." >> "$MINION_TASK.log"
 echo "Emailing alert..." >> "$MINION_TASK.log"
-cat "$MINION_TASK.log" | sendEmail -o tls=yes -f "$USERNAME" -t "$RECIPIENT" -s $SMTP_SERVER:$SMTP_PORT -xu "$USERNAME" -xp "$PASSWORD" -u "re: $MINION_TASK $TASK_TYPE (`date +%m-%d-%y`)"
+cat "$MINION_TASK.log" | sendEmail -o tls=yes -f "$USERNAME" -t "$APPROVAL_RECIPIENT" -s $SMTP_SERVER:$SMTP_PORT -xu "$USERNAME" -xp "$PASSWORD" -u "re: $MINION_TASK $TASK_TYPE (`date +%m-%d-%y`)"
 cat "$MINION_TASK.log" >> "$SYSTEM_LOG"
 rm -f "$MINION_TASK.log"; rm .request_processing.$MINION_TASK; rm $AUTH_MAIL; .globalvariables.$MINION_TASK
 exit 0
