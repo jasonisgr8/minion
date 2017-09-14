@@ -6,6 +6,7 @@
 # 
 VERSION="3.5"
 # Version History
+# 3.6 - Fixed first run log file bug
 # 3.5 - Added "loop" to have minion run itself every 2 minutes to replace slavedriver.sh
 # 3.4 - Fixed bug in authorization email process and removed DEFAULT_RECIPIENT
 # 3.3 - More cleanup
@@ -23,7 +24,7 @@ sudo $0 $1
 exit 0
 fi
 
-if [ $1 == "loop" ]; then
+if [ "$1" == "loop" ]; then
 while :
 do
 	echo "Running $0 in a 2 minute loop..."
@@ -38,6 +39,7 @@ fi
 MY_STAMP="`date +%H%M%S`"
 MINION_TASK=$TRIGGER-$MY_STAMP
 SYSTEM_LOG="./logs/minion.log"
+mkdir ./logs
 touch $SYSTEM_LOG
 
 rm -f "$MINION_TASK.log"
