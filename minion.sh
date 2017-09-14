@@ -213,19 +213,25 @@ TARGET_IP="`grep -i "Target\ IP" .request_processing.$MINION_TASK | awk -F: '{ p
 TARGET_PORT="`grep -i "Target\ Port" .request_processing.$MINION_TASK | awk -F: '{ print $2 }' | sed 's/^\ //g' | sed 's/[\`\;\:]//g'`"
 AUTHORIZATION_CODE="`grep -i "AUTHORIZATION\ CODE" .request_processing.$MINION_TASK | awk -F: '{ print $2 }' | sed 's/^\ //g' | sed 's/[\`\;\:]//g'`"
 RECIPIENT="`grep -i "Recipient" .request_processing.$MINION_TASK | awk -F: '{ print $2 }' | sed 's/^\ //g' | sed 's/[\`\;\:]//g'`"
-SEARCH="`grep -i "Search" .request_processing.$MINION_TASK | awk -F: '{ print $2 }' | sed 's/^\ //g' | sed 's/[\`\;\:]//g'`"
+SEARCH="`grep -i "Search\:" .request_processing.$MINION_TASK | awk -F: '{ print $2 }' | sed 's/^\ //g' | sed 's/[\`\;\:]//g'`"
+TARGET_DOMAIN="`grep -i "Target\ Domain" .request_processing.$MINION_TASK | awk -F: '{ print $2 }' | sed 's/^\ //g' | sed 's/[\`\;\:]//g'`"
+TARGET_EMAIL="`grep -i "Target\ email" .request_processing.$MINION_TASK | awk -F: '{ print $2 }' | sed 's/^\ //g' | sed 's/[\`\;\:]//g'`"
 
 echo "Processing Options..." >> "$SYSTEM_LOG"
 echo Target IP\: $TARGET_IP >> "$SYSTEM_LOG"
 echo Target Ports\: $TARGET_PORT >> "$SYSTEM_LOG"
 echo Recipient\: $RECIPIENT >> "$SYSTEM_LOG"
 echo Search\: $SEARCH >> "$SYSTEM_LOG"
+echo Target\ Domain\: $TARGET_DOMAIN >> "$SYSTEM_LOG"
+echo Target\ Email\: $TARGET_EMAIL >> "$SYSTEM_LOG"
 
 touch .globalvariables.$MINION_TASK
 echo "TARGET_IP=\"$TARGET_IP\"" >> .globalvariables.$MINION_TASK
 echo "TARGET_PORT=\"$TARGET_PORT\"" >> .globalvariables.$MINION_TASK
 echo "SEARCH=\"$SEARCH\"" >> .globalvariables.$MINION_TASK
+echo "TARGET_DOMAIN=\"$TARGET_DOMAIN\"" >> .globalvariables.$MINION_TASK
 echo "VERSION=\"$VERSION\"" >> .globalvariables.$MINION_TASK
+echo "TARGET_EMAIL=\"$TARGET_EMAIL\"" >> .globalvariables.$MINION_TASK
 
 # Special handling for email Recipients
 for ADDY in `echo $EMAIL_RECIPIENTS | tr [:upper:] [:lower:]`; do
