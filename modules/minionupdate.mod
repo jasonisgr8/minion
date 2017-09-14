@@ -13,6 +13,8 @@ chmod +x ../../modules/*
 cp minion.sh ../../
 chmod +x ../../minion.sh
 cp help_templates ../../
+cp sample-settings.cfg ../../
+cp README.md ../../
 echo "Done."
 echo "Cleaning up..."
 cd ../../
