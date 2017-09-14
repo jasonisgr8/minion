@@ -2,11 +2,12 @@
 # By Jason
 
 # Package requirements: ssh, heirloom-mailx, nmap, expect, fromdos (tofrodos)
-#Exit if the program is already running
+# Run "./minion.sh loop" to have it run every 2 minutes for auto-email management
 # 
-VERSION="3.4"
+VERSION="3.5"
 # Version History
-# 3.4 - fixed bug in authorization email process and removed DEFAULT_RECIPIENT
+# 3.5 - Added "loop" to have minion run itself every 2 minutes to replace slavedriver.sh
+# 3.4 - Fixed bug in authorization email process and removed DEFAULT_RECIPIENT
 # 3.3 - More cleanup
 # 3.2 - Starting cleanup
 # 3.1 - Initial Git release
@@ -19,6 +20,17 @@ if [ "$UID" = "0" ]; then
 echo "I have adequate permissions, continuing on..."
 else echo "I am not root, lets try one more time with sudo..."
 sudo $0 $1
+exit 0
+fi
+
+if [ $1 == "loop" ]; then
+while :
+do
+	echo "Running $0 in a 2 minute loop..."
+	$0
+	sleep 2m
+	echo "Checking..."
+done
 exit 0
 fi
 
