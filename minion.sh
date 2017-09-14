@@ -4,7 +4,7 @@
 # Package requirements: ssh, heirloom-mailx, nmap, expect, fromdos (tofrodos)
 # Run "./minion.sh loop" to have it run every 2 minutes for auto-email management
 # 
-VERSION="3.5"
+VERSION="3.6"
 # Version History
 # 3.6 - Fixed first run log file bug
 # 3.5 - Added "loop" to have minion run itself every 2 minutes to replace slavedriver.sh
