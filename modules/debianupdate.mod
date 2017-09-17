@@ -1,2 +1,2 @@
 apt update
-apt -y dist-upgrade
+apt -yq --force-yes dist-upgrade
