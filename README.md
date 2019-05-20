@@ -2,7 +2,7 @@
 Toolkit for linux task automation via gmail or O365.
 
 ## :scroll: Changelog
-3.7 - corrected local run bugs
+3.7 - corrected local run bugs & fixed O365 integrations
 
 3.6 - Fixed first run log file bug
 
