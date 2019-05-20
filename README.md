@@ -21,7 +21,7 @@ All contributions are welcome, from code to documentation, to graphics, to desig
 
 ##  :heavy_exclamation_mark: Requirements
 
-A linux operating system. Recommend Kali Linux 2016 "rolling" edition. 
+A linux operating system. Recommend Kali Linux "rolling" or ParrotOS 4+. 
 
 ## :octocat: Credits
-1. Me
+Me, Watchdogs 2, coffee, procrastanation, being lazy AF
