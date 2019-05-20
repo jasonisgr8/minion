@@ -1,5 +1,5 @@
 #Minion
-Toolkit for linux task automation via gmail or O365.
+Toolkit for linux task automation MailOps via gmail or O365.
 
 ## :scroll: Changelog
 3.7 - corrected local run bugs & fixed O365 integrations
