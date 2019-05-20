@@ -1,17 +1,19 @@
 #!/bin/bash
 # By Jason
 
-# Package requirements: ssh, heirloom-mailx, nmap, expect, fromdos (tofrodos)
+# Package requirements: ssh, heirloom-mailx, nmap, expect, tofrodos (fromdos)
 # Run "./minion.sh loop" to have it run every 2 minutes for auto-email management
 # 
-VERSION="3.6"
+VERSION="3.7"
 # Version History
+# 3.7 - corrected local run bugs
 # 3.6 - Fixed first run log file bug
 # 3.5 - Added "loop" to have minion run itself every 2 minutes to replace slavedriver.sh
 # 3.4 - Fixed bug in authorization email process and removed DEFAULT_RECIPIENT
 # 3.3 - More cleanup
 # 3.2 - Starting cleanup
 # 3.1 - Initial Git release
+
 source ./settings.cfg
 MODULES="`ls -1 $MODULEFOLDER`"
 #export $FILES
@@ -159,6 +161,7 @@ if [ ! $1 ]; then
 REPORT_REQUESTS="`echo "$GETNEWMAIL" | sed 's/\*/\\\*/g' | sed -e 's#<[^>]*>##g' | grep -vi "re\:" | grep -vi "fw\:" | grep -vi "seen"  | grep -i "$TRIGGER" | awk '{print $2 }' | sed 's/[\`\;\:|!@#\$%^&*()]//g'`"
 else 
 REPORT_REQUESTS="local"
+AUTHORIZED="good"
 fi
 
 if [ ! "$REPORT_REQUESTS" ]; then
@@ -169,7 +172,7 @@ fi
 #echo $REPORT_REQUESTS
 
 for EACH in $REPORT_REQUESTS; do
-if [ ! $1 ]; then
+if [ $REPORT_REQUESTS != "local" ]; then
 echo "Processing Email Task -- $EACH." >> "$SYSTEM_LOG"
 process_email_requests > .first_request_processing.$MINION_TASK
 else 
@@ -181,7 +184,10 @@ fi
 
 MODULE_BUILDER ()
 {
+if [ $REPORT_REQUESTS != "local" ]; then
 AUTHORIZATION_CHECK
+fi
+
 if [ "$AUTHORIZED" = "good" ]; then
 echo "Initiating $TASK_TYPE..." >> "$MINION_TASK.log"
 echo "Your request has been approved and is queued for execution.  Once completed, you will recieve your data." | sendEmail -o tls=yes -f "$USERNAME" -t "$RECIPIENT" -s $SMTP_SERVER:$SMTP_PORT -xu "$USERNAME" -xp "$PASSWORD" -u "re: $MINION_TASK $TASK_TYPE (`date +%m-%d-%y`)"
